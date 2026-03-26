@@ -24,6 +24,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.krafted.jokersescaperoom.data.CurseRepository
+import app.krafted.jokersescaperoom.ui.endgame.CurseBreakScreen
+import app.krafted.jokersescaperoom.ui.endgame.LeaderboardScreen
+import app.krafted.jokersescaperoom.ui.endgame.VictoryScreen
 import app.krafted.jokersescaperoom.ui.puzzle.CodeCrackerScreen
 import app.krafted.jokersescaperoom.ui.puzzle.ColourSequenceScreen
 import app.krafted.jokersescaperoom.ui.puzzle.OddOneOutScreen
@@ -112,13 +115,16 @@ fun JokerNavHost() {
             arguments = listOf(navArgument("cardId") { type = NavType.StringType })
         ) { backStackEntry ->
             val cardId = backStackEntry.arguments?.getString("cardId") ?: ""
-            PlaceholderScreen("Curse Break: $cardId — Coming Phase E1")
+            val context = LocalContext.current
+            val card = remember(cardId) { CurseRepository(context).getCard(cardId) }
+            val accentColor = card?.accentColor?.toComposeColor() ?: Color(0xFFB71C1C)
+            CurseBreakScreen(cardId = cardId, accentColor = accentColor, navController = navController)
         }
         composable(Routes.VICTORY) {
-            PlaceholderScreen("Victory — Coming Phase E2")
+            VictoryScreen(navController = navController)
         }
         composable(Routes.LEADERBOARD) {
-            PlaceholderScreen("Leaderboard — Coming Phase E3")
+            LeaderboardScreen(navController = navController)
         }
     }
 }
