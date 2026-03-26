@@ -44,7 +44,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -168,7 +167,7 @@ fun SequenceScreen(
                 targetState = if (uiState.phase == PuzzlePhase.SHOWING) "MEMORISE THE SEQUENCE" else "REPEAT THE SEQUENCE",
                 transitionSpec = {
                     (fadeIn(tween(300)) + slideInVertically { it / 2 }) togetherWith
-                        (fadeOut(tween(200)) + slideOutVertically { -it / 2 })
+                            (fadeOut(tween(200)) + slideOutVertically { -it / 2 })
                 },
                 label = "phase_label"
             ) { label ->
@@ -196,7 +195,6 @@ fun SequenceScreen(
             SectionDivider(accentColor = accentColor)
             Spacer(Modifier.weight(1f))
 
-            // 2+3+2 diamond layout
             val rows = listOf(listOf(0, 1), listOf(2, 3, 4), listOf(5, 6))
             Column(
                 verticalArrangement = Arrangement.spacedBy(14.dp),
@@ -204,7 +202,10 @@ fun SequenceScreen(
             ) {
                 rows.forEach { rowIndices ->
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(14.dp, Alignment.CenterHorizontally),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            14.dp,
+                            Alignment.CenterHorizontally
+                        ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         rowIndices.forEachIndexed { posInRow, symbolIdx ->
@@ -226,7 +227,6 @@ fun SequenceScreen(
 
             Spacer(Modifier.weight(1f))
 
-            // Bottom status area
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -314,7 +314,9 @@ private fun WatchingIndicator(accentColor: Color) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Box(modifier = Modifier.size(5.dp).background(accentColor.copy(alpha = alpha), CircleShape))
+        Box(modifier = Modifier
+            .size(5.dp)
+            .background(accentColor.copy(alpha = alpha), CircleShape))
         Text(
             text = "WATCHING",
             color = accentColor.copy(alpha = alpha),
@@ -323,7 +325,9 @@ private fun WatchingIndicator(accentColor: Color) {
             fontWeight = FontWeight.Medium,
             style = textShadow
         )
-        Box(modifier = Modifier.size(5.dp).background(accentColor.copy(alpha = alpha), CircleShape))
+        Box(modifier = Modifier
+            .size(5.dp)
+            .background(accentColor.copy(alpha = alpha), CircleShape))
     }
 }
 
@@ -344,7 +348,6 @@ private fun SymbolCell(
     val isCorrect = isFlashing && tapFlashCorrect
     val isWrong = isFlashing && !tapFlashCorrect
 
-    // Entrance animation
     val cellAlpha by animateFloatAsState(
         targetValue = if (visible) 1f else 0f,
         animationSpec = tween(380, delayMillis = enterDelay, easing = FastOutSlowInEasing),
@@ -356,7 +359,6 @@ private fun SymbolCell(
         label = "cell_offset_$index"
     )
 
-    // Glow pulse for active symbol
     val infinite = rememberInfiniteTransition(label = "glow_$index")
     val glowPulse by infinite.animateFloat(
         initialValue = 0.3f,
@@ -421,7 +423,6 @@ private fun SymbolCell(
             translationY = cellOffsetY
         }
     ) {
-        // Outer ambient glow when active
         if (isShowingActive) {
             Box(
                 modifier = Modifier
@@ -436,7 +437,6 @@ private fun SymbolCell(
                         )
                     )
             )
-            // Animated outer ring
             Box(
                 modifier = Modifier
                     .size((98 + glowPulse * 8).dp)
@@ -448,7 +448,6 @@ private fun SymbolCell(
             )
         }
 
-        // Card with shadow
         Box(
             modifier = Modifier
                 .size(96.dp)
@@ -479,27 +478,12 @@ private fun SymbolCell(
                 .clickable { onTap() },
             contentAlignment = Alignment.Center
         ) {
-            // Inner top highlight (light catch)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.5.dp)
-                    .align(Alignment.TopCenter)
-                    .background(
-                        Brush.horizontalGradient(
-                            listOf(
-                                Color.Transparent,
-                                Color.White.copy(alpha = if (isShowingActive) 0.25f else 0.07f),
-                                Color.Transparent
-                            )
-                        )
-                    )
-            )
-
             Image(
                 painter = painterResource(symbolDrawables[index]),
                 contentDescription = null,
-                modifier = Modifier.size(60.dp).padding(4.dp),
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(4.dp),
                 contentScale = ContentScale.Fit,
                 alpha = imageAlpha
             )

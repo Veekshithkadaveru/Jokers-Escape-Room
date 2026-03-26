@@ -27,6 +27,8 @@ import app.krafted.jokersescaperoom.data.CurseRepository
 import app.krafted.jokersescaperoom.ui.endgame.CurseBreakScreen
 import app.krafted.jokersescaperoom.ui.endgame.LeaderboardScreen
 import app.krafted.jokersescaperoom.ui.endgame.VictoryScreen
+import app.krafted.jokersescaperoom.ui.home.CardIntroScreen
+import app.krafted.jokersescaperoom.ui.home.HomeScreen
 import app.krafted.jokersescaperoom.ui.puzzle.CodeCrackerScreen
 import app.krafted.jokersescaperoom.ui.puzzle.ColourSequenceScreen
 import app.krafted.jokersescaperoom.ui.puzzle.OddOneOutScreen
@@ -71,7 +73,7 @@ fun JokerNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.puzzle("DARK_JESTER"),
+        startDestination = Routes.HOME,
         enterTransition = { darkFadeIn },
         exitTransition = { darkFadeOut },
         popEnterTransition = { darkFadeIn },
@@ -81,14 +83,14 @@ fun JokerNavHost() {
             PlaceholderScreen("Splash — Coming Phase B1")
         }
         composable(Routes.HOME) {
-            PlaceholderScreen("Home — Coming Phase B2")
+            HomeScreen(navController = navController)
         }
         composable(
             route = Routes.CARD_INTRO,
             arguments = listOf(navArgument("cardId") { type = NavType.StringType })
         ) { backStackEntry ->
             val cardId = backStackEntry.arguments?.getString("cardId") ?: ""
-            PlaceholderScreen("Card Intro: $cardId — Coming Phase B3")
+            CardIntroScreen(cardId = cardId, navController = navController)
         }
         composable(
             route = Routes.PUZZLE,
@@ -118,7 +120,11 @@ fun JokerNavHost() {
             val context = LocalContext.current
             val card = remember(cardId) { CurseRepository(context).getCard(cardId) }
             val accentColor = card?.accentColor?.toComposeColor() ?: Color(0xFFB71C1C)
-            CurseBreakScreen(cardId = cardId, accentColor = accentColor, navController = navController)
+            CurseBreakScreen(
+                cardId = cardId,
+                accentColor = accentColor,
+                navController = navController
+            )
         }
         composable(Routes.VICTORY) {
             VictoryScreen(navController = navController)

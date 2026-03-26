@@ -95,7 +95,7 @@ fun SparksParticleSystem(
 
             val xPos = p.x * size.width
             val yPos = p.y * size.height
-            
+
             drawCircle(
                 color = accentColor.copy(alpha = p.alpha * 0.4f),
                 radius = p.size,
@@ -179,7 +179,6 @@ fun PuzzleHeader(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.scale(symbolScale)
                 ) {
-                    // Symbol Outer Glow
                     Box(
                         modifier = Modifier
                             .size(64.dp)
@@ -192,7 +191,6 @@ fun PuzzleHeader(
                                 )
                             )
                     )
-                    // Symbol Container
                     Box(
                         modifier = Modifier
                             .size(54.dp)
@@ -205,7 +203,10 @@ fun PuzzleHeader(
                             .border(
                                 1.dp,
                                 Brush.verticalGradient(
-                                    listOf(accentColor.copy(alpha = 0.8f), accentColor.copy(alpha = 0.2f))
+                                    listOf(
+                                        accentColor.copy(alpha = 0.8f),
+                                        accentColor.copy(alpha = 0.2f)
+                                    )
                                 ),
                                 RoundedCornerShape(10.dp)
                             ),
@@ -341,7 +342,11 @@ fun PuzzleConfirmButton(
                     )
                     Modifier.background(
                         Brush.linearGradient(
-                            colors = listOf(Color.Transparent, Color.White.copy(alpha = 0.08f), Color.Transparent),
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.White.copy(alpha = 0.08f),
+                                Color.Transparent
+                            ),
                             start = Offset(shimmerMove * 1000f - 500f, 0f),
                             end = Offset(shimmerMove * 1000f, 0f)
                         )
