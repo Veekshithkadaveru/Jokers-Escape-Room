@@ -9,12 +9,12 @@ data class PuzzleUiState(
     val isFailed: Boolean = false,
     val isReset: Boolean = false,
 
-    // Card 1 + Card 7 Step 1 — symbol sequence
+    // Card 1 + Card 6 — sequence flash + player replay
     val sequence: List<Int> = emptyList(),
     val playerInput: List<Int> = emptyList(),
-    val currentShowIndex: Int = 0,
+    val currentShowIndex: Int = -1,
 
-    // Card 3 + Card 7 Step 2 — pattern mirror
+    // Card 3 — pattern mirror
     val gridPattern: List<Boolean> = emptyList(),
     val playerGrid: List<Boolean> = emptyList(),
     val gridSize: Int = 3,
@@ -22,20 +22,24 @@ data class PuzzleUiState(
     // Card 2 — code cracker
     val dialValues: List<Int> = listOf(0, 0, 0, 0),
 
-    // Card 4 — word unscramble
-    val scrambledLetters: List<Char> = emptyList(),
-    val playerLetters: List<Char?> = emptyList(),
+    // Card 4 — tap the answer
+    val symbolLetters: List<String> = emptyList(),
+    val answerSymbols: List<Int> = emptyList(),
+    val playerTaps: List<Int> = emptyList(),
+    val tapClue: String = "",
 
-    // Card 5 — odd one out
+    // Cards 5 + 7 — odd one out / speed round
     val currentRound: Int = 1,
     val totalRounds: Int = 5,
-    val oddSymbolIndex: Int = -1,
+    val oddIndex: Int = -1,
+    val symbolCount: Int = 6,
+    val differenceType: String = "COLOUR",
 
-    // Card 6 + Card 7 Step 3 — colour sequence
+    // Card 6 — colour sequence
     val colourSequence: List<Int> = emptyList(),
     val playerColourInput: List<Int> = emptyList(),
     val activeColourIndex: Int? = null,
 
-    // Card 7 — final boss
-    val finalBossStep: Int = 1
+    // Card 7 — speed round timer (0.0 = expired, 1.0 = full)
+    val timeRemaining: Float = 1f
 )

@@ -41,16 +41,12 @@ object Routes {
     const val CARD_INTRO = "card_intro/{cardId}"
     const val PUZZLE = "puzzle/{cardId}"
     const val CURSE_BREAK = "curse_break/{cardId}"
-    const val FAIL = "fail/{cardId}"
-    const val RESET = "reset/{cardId}"
     const val VICTORY = "victory"
     const val LEADERBOARD = "leaderboard"
 
     fun cardIntro(cardId: String) = "card_intro/$cardId"
     fun puzzle(cardId: String) = "puzzle/$cardId"
     fun curseBreak(cardId: String) = "curse_break/$cardId"
-    fun fail(cardId: String) = "fail/$cardId"
-    fun reset(cardId: String) = "reset/$cardId"
 }
 
 @Composable
@@ -92,27 +88,13 @@ fun JokerNavHost() {
             arguments = listOf(navArgument("cardId") { type = NavType.StringType })
         ) { backStackEntry ->
             val cardId = backStackEntry.arguments?.getString("cardId") ?: ""
-            PlaceholderScreen("Curse Break: $cardId — Coming Phase D3")
-        }
-        composable(
-            route = Routes.FAIL,
-            arguments = listOf(navArgument("cardId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val cardId = backStackEntry.arguments?.getString("cardId") ?: ""
-            PlaceholderScreen("Fail: $cardId — Coming Phase C7")
-        }
-        composable(
-            route = Routes.RESET,
-            arguments = listOf(navArgument("cardId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val cardId = backStackEntry.arguments?.getString("cardId") ?: ""
-            PlaceholderScreen("Reset: $cardId — Coming Phase C8")
+            PlaceholderScreen("Curse Break: $cardId — Coming Phase E1")
         }
         composable(Routes.VICTORY) {
-            PlaceholderScreen("Victory — Coming Phase D4")
+            PlaceholderScreen("Victory — Coming Phase E2")
         }
         composable(Routes.LEADERBOARD) {
-            PlaceholderScreen("Leaderboard — Coming Phase D5")
+            PlaceholderScreen("Leaderboard — Coming Phase E3")
         }
     }
 }

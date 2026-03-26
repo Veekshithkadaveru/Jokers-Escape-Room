@@ -36,6 +36,13 @@ interface CardProgressDao {
     @Query("UPDATE card_progress SET totalResets = totalResets + 1 WHERE cardId = :cardId")
     suspend fun incrementResets(cardId: String)
 
+    @Query("""
+        UPDATE card_progress
+        SET isCurseBroken = 0, bestTimeMs = NULL, brokenAt = NULL
+        WHERE cardId = :cardId
+    """)
+    suspend fun resetCard(cardId: String)
+
     @Query("SELECT COUNT(*) FROM card_progress WHERE isCurseBroken = 1")
     fun brokenCountFlow(): Flow<Int>
 }

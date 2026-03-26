@@ -16,16 +16,14 @@ data class CursedCard(
     val successQuote: String,
     val failQuote: String,
     val resetQuote: String,
-    // Card 1, 3, 5, 6 — difficulty tiers
+    // Cards 1, 3, 5, 6, 7 — difficulty tiers
     val difficulty: List<DifficultyConfig>? = null,
     // Card 2 — riddles per level
     val riddles: List<RiddleConfig>? = null,
-    // Card 4 — word pool
-    val words: List<WordConfig>? = null,
+    // Card 4 — tap-answer configs
+    val tapAnswer: List<TapAnswerConfig>? = null,
     // Card 6 — colour hex list
-    val colours: List<String>? = null,
-    // Card 7 — 3-step config
-    val steps: List<FinalBossStep>? = null
+    val colours: List<String>? = null
 )
 
 data class DifficultyConfig(
@@ -36,10 +34,11 @@ data class DifficultyConfig(
     // Card 3
     val gridSize: Int? = null,
     val litTiles: Int? = null,
-    // Card 5
+    // Cards 5 + 7
     val rounds: Int? = null,
     val symbolCount: Int? = null,
     val differenceType: String? = null,
+    val timerMs: Int? = null,
     // Card 6
     val startLength: Int? = null,
     val maxLength: Int? = null,
@@ -53,18 +52,8 @@ data class RiddleConfig(
     val answer: String
 )
 
-data class WordConfig(
-    val level: String,
-    val scrambled: String,
-    val answer: String,
-    val clue: String
-)
-
-data class FinalBossStep(
-    val step: Int,
-    val puzzleType: String,
-    val sequenceLength: Int? = null,
-    val gridSize: Int? = null,
-    val litTiles: Int? = null,
-    val startLength: Int? = null
+data class TapAnswerConfig(
+    val clue: String,
+    val answerSymbols: List<Int>,
+    val symbolLetters: List<String>
 )

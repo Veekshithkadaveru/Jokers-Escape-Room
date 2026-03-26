@@ -13,9 +13,21 @@
       "failQuote": "Ha. Already forgotten? The curse feeds on your confusion. Try again... if you dare.",
       "resetQuote": "Three times. Three failures. The Jester laughs as your memory crumbles to dust.",
       "difficulty": [
-        { "level": "EASY", "sequenceLength": 4, "displayTimeMs": 800 },
-        { "level": "MEDIUM", "sequenceLength": 6, "displayTimeMs": 600 },
-        { "level": "HARD", "sequenceLength": 8, "displayTimeMs": 400 }
+        {
+          "level": "EASY",
+          "sequenceLength": 4,
+          "displayTimeMs": 800
+        },
+        {
+          "level": "MEDIUM",
+          "sequenceLength": 6,
+          "displayTimeMs": 600
+        },
+        {
+          "level": "HARD",
+          "sequenceLength": 8,
+          "displayTimeMs": 400
+        }
       ]
     },
     {
@@ -64,9 +76,21 @@
       "failQuote": "Imperfect. The diamond does not forgive imperfection. Look closer.",
       "resetQuote": "Three broken reflections. The diamond has lost its patience. Begin again.",
       "difficulty": [
-        { "level": "EASY", "gridSize": 3, "litTiles": 4 },
-        { "level": "MEDIUM", "gridSize": 4, "litTiles": 7 },
-        { "level": "HARD", "gridSize": 4, "litTiles": 10 }
+        {
+          "level": "EASY",
+          "gridSize": 3,
+          "litTiles": 4
+        },
+        {
+          "level": "MEDIUM",
+          "gridSize": 4,
+          "litTiles": 7
+        },
+        {
+          "level": "HARD",
+          "gridSize": 4,
+          "litTiles": 10
+        }
       ]
     },
     {
@@ -76,21 +100,66 @@
       "symbol": "ag3_sym_4",
       "background": "ag3_back_4",
       "accentColor": "#1A237E",
-      "puzzleType": "WORD_UNSCRAMBLE",
+      "puzzleType": "TAP_ANSWER",
       "intro": "Words hold power in my carnival. Rearrange the chaos I have made of language — if your feeble mind can still read.",
       "successQuote": "You found the word hiding in the shadow. A linguist as well as a thinker. How tiresome.",
       "failQuote": "Still scrambled. The spade buries your attempts deeper. Try again.",
       "resetQuote": "Three failures. The shadow has swallowed the word whole. The letters scatter once more.",
-      "words": [
-        { "level": "EASY", "scrambled": "RSECU", "answer": "CURSE", "clue": "What the Joker has placed on you" },
-        { "level": "EASY", "scrambled": "RAKED", "answer": "DAKER", "clue": "Opposite of light" },
-        { "level": "EASY", "scrambled": "TGINS", "answer": "STING", "clue": "What a betrayal does" },
-        { "level": "MEDIUM", "scrambled": "GANLHUE", "answer": "LANGUHE", "clue": "What the Joker does at your failure" },
-        { "level": "MEDIUM", "scrambled": "WDOASH", "answer": "SHADOW", "clue": "What follows you in the dark" },
-        { "level": "MEDIUM", "scrambled": "LTIBARN", "answer": "TRAILBN", "clue": "Twisted and entangled" },
-        { "level": "HARD", "scrambled": "NSETRIPE", "answer": "SINPETER", "clue": "A cunning deception" },
-        { "level": "HARD", "scrambled": "RKTAIDC", "answer": "DARKTIC", "clue": "A sinister act" },
-        { "level": "HARD", "scrambled": "LMAINCE", "answer": "MALINCE", "clue": "Desire to cause harm" }
+      "tapAnswer": [
+        {
+          "symbolLetters": [
+            "C",
+            "U",
+            "R",
+            "S",
+            "E",
+            "D",
+            "A"
+          ],
+          "clue": "A trick played by the court fool",
+          "answerSymbols": [
+            2,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "symbolLetters": [
+            "C",
+            "U",
+            "R",
+            "S",
+            "E",
+            "D",
+            "A"
+          ],
+          "clue": "The fearless act the Joker mocks",
+          "answerSymbols": [
+            5,
+            6,
+            2,
+            4
+          ]
+        },
+        {
+          "symbolLetters": [
+            "C",
+            "U",
+            "R",
+            "S",
+            "E",
+            "D",
+            "A"
+          ],
+          "clue": "The mark left by the Joker's blade",
+          "answerSymbols": [
+            3,
+            0,
+            6,
+            2
+          ]
+        }
       ]
     },
     {
@@ -106,9 +175,24 @@
       "failQuote": "Blind. The odd one laughs at you from within the crowd. Look again.",
       "resetQuote": "Three times you saw what was not there. The crown has clouded your vision completely. Start fresh.",
       "difficulty": [
-        { "level": "EASY", "rounds": 3, "symbolCount": 6, "differenceType": "COLOUR" },
-        { "level": "MEDIUM", "rounds": 5, "symbolCount": 8, "differenceType": "ROTATION" },
-        { "level": "HARD", "rounds": 5, "symbolCount": 9, "differenceType": "SUBTLE_SIZE" }
+        {
+          "level": "EASY",
+          "rounds": 3,
+          "symbolCount": 6,
+          "differenceType": "COLOUR"
+        },
+        {
+          "level": "MEDIUM",
+          "rounds": 5,
+          "symbolCount": 8,
+          "differenceType": "ROTATION"
+        },
+        {
+          "level": "HARD",
+          "rounds": 5,
+          "symbolCount": 9,
+          "differenceType": "SUBTLE_SIZE"
+        }
       ]
     },
     {
@@ -123,11 +207,34 @@
       "successQuote": "You followed the demon's pattern. Not many do. The club acknowledges your discipline.",
       "failQuote": "Wrong colour. The demon resets. Pay closer attention this time.",
       "resetQuote": "Three full resets. The demon has no more patience for you. The sequence scatters. Begin again.",
-      "colours": ["#B71C1C", "#4A148C", "#1A237E", "#1B5E20", "#E65100", "#F57F17", "#880E4F"],
+      "colours": [
+        "#B71C1C",
+        "#4A148C",
+        "#1A237E",
+        "#1B5E20",
+        "#E65100",
+        "#F57F17",
+        "#880E4F"
+      ],
       "difficulty": [
-        { "level": "EASY", "startLength": 3, "maxLength": 5, "flashTimeMs": 700 },
-        { "level": "MEDIUM", "startLength": 4, "maxLength": 7, "flashTimeMs": 500 },
-        { "level": "HARD", "startLength": 5, "maxLength": 9, "flashTimeMs": 300 }
+        {
+          "level": "EASY",
+          "startLength": 3,
+          "maxLength": 5,
+          "flashTimeMs": 700
+        },
+        {
+          "level": "MEDIUM",
+          "startLength": 4,
+          "maxLength": 7,
+          "flashTimeMs": 500
+        },
+        {
+          "level": "HARD",
+          "startLength": 5,
+          "maxLength": 9,
+          "flashTimeMs": 300
+        }
       ]
     },
     {
@@ -137,15 +244,19 @@
       "symbol": "ag3_sym_7",
       "background": "ag3_back_2",
       "accentColor": "#212121",
-      "puzzleType": "FINAL_BOSS",
+      "puzzleType": "SPEED_ROUND",
       "intro": "So. You broke six of my curses. Impressive — and deeply annoying. But the Eye sees all. It holds fragments of every curse combined. Break this last seal... and you are free. Fail... and you belong to me.",
       "successQuote": "Free. You are free. Leave my carnival. But know this — the Joker never forgets a face.",
       "failQuote": "So close. The Eye blinks. Try again — all three steps await.",
       "resetQuote": "Three attempts. Three failures on the final curse. The Eye weeps with laughter. From the very beginning.",
-      "steps": [
-        { "step": 1, "puzzleType": "SYMBOL_SEQUENCE", "sequenceLength": 5 },
-        { "step": 2, "puzzleType": "PATTERN_MIRROR", "gridSize": 3, "litTiles": 5 },
-        { "step": 3, "puzzleType": "COLOUR_SEQUENCE", "startLength": 4 }
+      "difficulty": [
+        {
+          "level": "MEDIUM",
+          "rounds": 7,
+          "symbolCount": 9,
+          "differenceType": "COLOUR",
+          "timerMs": 2000
+        }
       ]
     }
   ]
