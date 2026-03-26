@@ -25,8 +25,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.krafted.jokersescaperoom.data.CurseRepository
 import app.krafted.jokersescaperoom.ui.puzzle.CodeCrackerScreen
+import app.krafted.jokersescaperoom.ui.puzzle.ColourSequenceScreen
+import app.krafted.jokersescaperoom.ui.puzzle.OddOneOutScreen
 import app.krafted.jokersescaperoom.ui.puzzle.PatternMirrorScreen
 import app.krafted.jokersescaperoom.ui.puzzle.SequenceScreen
+import app.krafted.jokersescaperoom.ui.puzzle.SpeedRoundScreen
+import app.krafted.jokersescaperoom.ui.puzzle.TapAnswerScreen
 import app.krafted.jokersescaperoom.ui.puzzle.toComposeColor
 import app.krafted.jokersescaperoom.ui.theme.JokersEscapeRoomTheme
 
@@ -96,6 +100,10 @@ fun JokerNavHost() {
                 "SYMBOL_SEQUENCE" -> SequenceScreen(cardId, accentColor, navController)
                 "CODE_CRACKER" -> CodeCrackerScreen(cardId, accentColor, navController)
                 "PATTERN_MIRROR" -> PatternMirrorScreen(cardId, accentColor, navController)
+                "TAP_ANSWER" -> TapAnswerScreen(cardId, accentColor, navController)
+                "ODD_ONE_OUT" -> OddOneOutScreen(cardId, accentColor, navController)
+                "COLOUR_SEQUENCE" -> ColourSequenceScreen(cardId, accentColor, navController)
+                "SPEED_ROUND" -> SpeedRoundScreen(cardId, accentColor, navController)
                 else -> PlaceholderScreen("Coming: $puzzleType")
             }
         }
