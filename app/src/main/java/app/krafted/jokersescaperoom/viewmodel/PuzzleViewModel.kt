@@ -24,6 +24,9 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
     private val _uiState = MutableStateFlow(PuzzleUiState())
     val uiState: StateFlow<PuzzleUiState> = _uiState.asStateFlow()
 
+    private val _cardInfo = MutableStateFlow<CursedCard?>(null)
+    val cardInfo: StateFlow<CursedCard?> = _cardInfo.asStateFlow()
+
     private var currentCard: CursedCard? = null
     private var startTimeMs: Long = 0L
     private var showingJob: Job? = null
@@ -33,6 +36,7 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
     fun loadPuzzle(cardId: String, preserveAttempts: Int = 3) {
         val card = repository.getCard(cardId) ?: return
         currentCard = card
+        _cardInfo.value = card
         startTimeMs = System.currentTimeMillis()
 
         val puzzleType = PuzzleType.valueOf(card.puzzleType)
@@ -166,8 +170,8 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         showingJob = viewModelScope.launch {
             delay(600L)
             val sequence = _uiState.value.sequence
-            sequence.forEachIndexed { index, _ ->
-                _uiState.value = _uiState.value.copy(currentShowIndex = index)
+            sequence.forEach { symbolValue ->
+                _uiState.value = _uiState.value.copy(currentShowIndex = symbolValue)
                 delay(displayTimeMs)
                 _uiState.value = _uiState.value.copy(currentShowIndex = -1)
                 delay(200L)

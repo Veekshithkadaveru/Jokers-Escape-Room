@@ -12,15 +12,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import app.krafted.jokersescaperoom.data.CurseRepository
+import app.krafted.jokersescaperoom.ui.puzzle.CodeCrackerScreen
+import app.krafted.jokersescaperoom.ui.puzzle.PatternMirrorScreen
+import app.krafted.jokersescaperoom.ui.puzzle.SequenceScreen
+import app.krafted.jokersescaperoom.ui.puzzle.toComposeColor
 import app.krafted.jokersescaperoom.ui.theme.JokersEscapeRoomTheme
 
 class MainActivity : ComponentActivity() {
@@ -57,7 +64,7 @@ fun JokerNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.SPLASH,
+        startDestination = Routes.puzzle("DARK_JESTER"),
         enterTransition = { darkFadeIn },
         exitTransition = { darkFadeOut },
         popEnterTransition = { darkFadeIn },
@@ -81,7 +88,16 @@ fun JokerNavHost() {
             arguments = listOf(navArgument("cardId") { type = NavType.StringType })
         ) { backStackEntry ->
             val cardId = backStackEntry.arguments?.getString("cardId") ?: ""
-            PlaceholderScreen("Puzzle: $cardId — Coming Phase C")
+            val context = LocalContext.current
+            val card = remember(cardId) { CurseRepository(context).getCard(cardId) }
+            val puzzleType = card?.puzzleType ?: ""
+            val accentColor = card?.accentColor?.toComposeColor() ?: Color(0xFFB71C1C)
+            when (puzzleType) {
+                "SYMBOL_SEQUENCE" -> SequenceScreen(cardId, accentColor, navController)
+                "CODE_CRACKER" -> CodeCrackerScreen(cardId, accentColor, navController)
+                "PATTERN_MIRROR" -> PatternMirrorScreen(cardId, accentColor, navController)
+                else -> PlaceholderScreen("Coming: $puzzleType")
+            }
         }
         composable(
             route = Routes.CURSE_BREAK,
