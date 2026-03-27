@@ -29,6 +29,7 @@ import app.krafted.jokersescaperoom.ui.endgame.LeaderboardScreen
 import app.krafted.jokersescaperoom.ui.endgame.VictoryScreen
 import app.krafted.jokersescaperoom.ui.home.CardIntroScreen
 import app.krafted.jokersescaperoom.ui.home.HomeScreen
+import app.krafted.jokersescaperoom.ui.home.SplashScreen
 import app.krafted.jokersescaperoom.ui.puzzle.CodeCrackerScreen
 import app.krafted.jokersescaperoom.ui.puzzle.ColourSequenceScreen
 import app.krafted.jokersescaperoom.ui.puzzle.OddOneOutScreen
@@ -73,14 +74,14 @@ fun JokerNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.HOME,
+        startDestination = Routes.SPLASH,
         enterTransition = { darkFadeIn },
         exitTransition = { darkFadeOut },
         popEnterTransition = { darkFadeIn },
         popExitTransition = { darkFadeOut }
     ) {
         composable(Routes.SPLASH) {
-            PlaceholderScreen("Splash — Coming Phase B1")
+            SplashScreen(navController = navController)
         }
         composable(Routes.HOME) {
             HomeScreen(navController = navController)

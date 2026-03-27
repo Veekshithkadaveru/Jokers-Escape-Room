@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.JokersEscapeRoom" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.JokersEscapeRoom" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Prevents white flash before Compose renders -->
+        <item name="android:windowBackground">#0A0A0A</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:statusBarColor">#00000000</item>
+        <item name="android:navigationBarColor">#00000000</item>
+    </style>
+
 </resources>
