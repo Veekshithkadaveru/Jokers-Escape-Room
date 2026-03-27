@@ -90,7 +90,7 @@ fun CardIntroScreen(
     )
     val enterOffset by animateFloatAsState(
         targetValue = if (contentVisible) 0f else 32f,
-        animationSpec = tween(600, easing = FastOutSlowInEasing),
+        animationSpec = spring(dampingRatio = 0.7f, stiffness = 300f),
         label = "enter_offset"
     )
 

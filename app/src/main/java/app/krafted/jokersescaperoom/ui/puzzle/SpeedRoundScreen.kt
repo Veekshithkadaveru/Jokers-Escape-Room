@@ -189,6 +189,7 @@ fun SpeedRoundScreen(
             // Countdown timer bar
             TimerBar(
                 timeRemaining = uiState.timeRemaining,
+                timerDurationMs = timerDurationMs,
                 accentColor = accentColor
             )
 
@@ -205,7 +206,6 @@ fun SpeedRoundScreen(
 
             Spacer(Modifier.weight(1f))
 
-            // Symbol grid
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -214,7 +214,10 @@ fun SpeedRoundScreen(
                 val rows = (0 until uiState.symbolCount).chunked(cols)
                 rows.forEach { rowIndices ->
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            10.dp,
+                            Alignment.CenterHorizontally
+                        ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         rowIndices.forEach { cellIdx ->
@@ -261,12 +264,14 @@ fun SpeedRoundScreen(
 @Composable
 private fun TimerBar(
     timeRemaining: Float,
+    timerDurationMs: Long,
     accentColor: Color
 ) {
+    val remainingMs = timeRemaining * timerDurationMs
     val timerColor by animateColorAsState(
         targetValue = when {
-            timeRemaining > 0.5f -> accentColor
-            timeRemaining > 0.25f -> Color(0xFFFF8F00)
+            remainingMs > 1000f -> accentColor
+            remainingMs > 500f -> Color(0xFFFF8F00)
             else -> Color(0xFFF44336)
         },
         animationSpec = tween(200),
@@ -321,7 +326,7 @@ private fun TimerBar(
                         .background(Color.White.copy(alpha = 0.25f))
                 )
             }
-            // Time pulse indicator
+
             Box(
                 modifier = Modifier
                     .size(8.dp)
@@ -396,7 +401,11 @@ private fun SpeedSymbolCard(
                 .align(Alignment.TopCenter)
                 .background(
                     Brush.horizontalGradient(
-                        listOf(Color.Transparent, Color.White.copy(alpha = 0.07f), Color.Transparent)
+                        listOf(
+                            Color.Transparent,
+                            Color.White.copy(alpha = 0.07f),
+                            Color.Transparent
+                        )
                     )
                 )
         )

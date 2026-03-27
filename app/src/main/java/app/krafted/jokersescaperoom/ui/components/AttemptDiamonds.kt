@@ -36,7 +36,7 @@ fun AttemptDiamonds(
                 label = "diamond_scale_$index"
             )
             val alpha by animateFloatAsState(
-                targetValue = if (isActive) 1f else 0.25f,
+                targetValue = if (isActive) 1f else 0f,
                 animationSpec = tween(durationMillis = 300),
                 label = "diamond_alpha_$index"
             )

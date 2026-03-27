@@ -9,6 +9,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -333,7 +334,7 @@ fun HomeScreen(
                     CursedCardItem(
                         card = card,
                         cardNumber = index + 1,
-                        enterDelay = 180 + index * 75,
+                        enterDelay = 180 + index * 80,
                         isFinal = false,
                         isLocked = false,
                         onClick = { navController.navigate(Routes.cardIntro(card.cardId)) }
@@ -345,7 +346,7 @@ fun HomeScreen(
                         CursedCardItem(
                             card = card,
                             cardNumber = 7,
-                            enterDelay = 180 + 6 * 75,
+                            enterDelay = 180 + 6 * 80,
                             isFinal = true,
                             isLocked = brokenCount < 6,
                             onClick = { navController.navigate(Routes.cardIntro(card.cardId)) }
@@ -376,10 +377,12 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    Box(Modifier
-                        .size(4.dp)
-                        .rotate(45f)
-                        .background(homeGold.copy(0.7f)))
+                    Box(
+                        Modifier
+                            .size(4.dp)
+                            .rotate(45f)
+                            .background(homeGold.copy(0.7f))
+                    )
                     Text(
                         text = "THE JOKER'S LEDGER",
                         color = homeGold.copy(0.8f),
@@ -388,10 +391,12 @@ fun HomeScreen(
                         fontWeight = FontWeight.Bold,
                         style = textShadow
                     )
-                    Box(Modifier
-                        .size(4.dp)
-                        .rotate(45f)
-                        .background(homeGold.copy(0.7f)))
+                    Box(
+                        Modifier
+                            .size(4.dp)
+                            .rotate(45f)
+                            .background(homeGold.copy(0.7f))
+                    )
                 }
             }
 
@@ -437,7 +442,7 @@ private fun CursedCardItem(
 
     val pulse = rememberInfiniteTransition(label = "pulse_${card.cardId}")
     val pulseAlpha by pulse.animateFloat(
-        initialValue = 0.4f, targetValue = 1f,
+        initialValue = 0.7f, targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(1900, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
@@ -492,6 +497,47 @@ private fun CursedCardItem(
             contentScale = ContentScale.Crop,
             colorFilter = if (card.isCurseBroken || isLocked) greyscaleFilter else null
         )
+
+        if (card.isCurseBroken) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                val w = size.width
+                val h = size.height
+                val crackColor = Color.White.copy(alpha = 0.13f)
+
+                drawLine(
+                    crackColor,
+                    Offset(w * 0.45f, 0f),
+                    Offset(w * 0.28f, h * 0.55f),
+                    strokeWidth = 1.5f
+                )
+                drawLine(
+                    crackColor,
+                    Offset(w * 0.28f, h * 0.55f),
+                    Offset(w * 0.38f, h),
+                    strokeWidth = 1.2f
+                )
+
+                drawLine(
+                    crackColor.copy(alpha = 0.08f),
+                    Offset(w * 0.35f, h * 0.3f),
+                    Offset(w * 0.65f, h * 0.5f),
+                    strokeWidth = 1f
+                )
+
+                drawLine(
+                    crackColor.copy(alpha = 0.09f),
+                    Offset(w * 0.72f, 0f),
+                    Offset(w * 0.62f, h * 0.42f),
+                    strokeWidth = 1f
+                )
+                drawLine(
+                    crackColor.copy(alpha = 0.07f),
+                    Offset(w * 0.62f, h * 0.42f),
+                    Offset(w * 0.78f, h * 0.8f),
+                    strokeWidth = 1f
+                )
+            }
+        }
 
         Box(
             modifier = Modifier

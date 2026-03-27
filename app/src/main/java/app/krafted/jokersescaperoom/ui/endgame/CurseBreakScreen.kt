@@ -68,7 +68,6 @@ fun CurseBreakScreen(
     val symbolIndex = card?.symbol?.toSymbolIndex() ?: 0
     val bgDrawable = remember(card?.background) { card?.background.toBackgroundDrawable() }
 
-    // Animation states
     val shakeOffset = remember { Animatable(0f) }
     val flashAlpha = remember { Animatable(0f) }
     val bannerOffset = remember { Animatable(-160f) }
@@ -80,34 +79,29 @@ fun CurseBreakScreen(
     var quoteComplete by remember { mutableStateOf(false) }
     var showButton by remember { mutableStateOf(false) }
 
-    // Entrance + sequence
     LaunchedEffect(Unit) {
-        // Card entrance
+
         launch {
             cardAlpha.animateTo(1f, tween(400))
         }
         cardScale.animateTo(1f, spring(dampingRatio = 0.5f, stiffness = 400f))
         delay(200)
 
-        // 1. Shake
-        shakeOffset.animateTo(18f, spring(dampingRatio = 0.1f, stiffness = 900f))
+        shakeOffset.animateTo(18f, spring(dampingRatio = 0.1f, stiffness = 800f))
         shakeOffset.animateTo(-14f, tween(60))
         shakeOffset.animateTo(10f, tween(55))
         shakeOffset.animateTo(-7f, tween(50))
         shakeOffset.animateTo(0f, spring(dampingRatio = 0.5f))
         delay(100)
 
-        // 2. Flash
-        flashAlpha.animateTo(0.85f, tween(120))
-        flashAlpha.animateTo(0f, tween(350))
+        flashAlpha.animateTo(0.85f, tween(150))
+        flashAlpha.animateTo(0f, tween(300))
         delay(50)
 
-        // 3. Banner
         launch { bannerAlpha.animateTo(1f, tween(300)) }
-        bannerOffset.animateTo(0f, spring(dampingRatio = 0.55f, stiffness = 500f))
+        bannerOffset.animateTo(0f, spring(dampingRatio = 0.55f, stiffness = 600f))
         delay(500)
 
-        // 4. Quote
         showQuote = true
     }
 
@@ -140,7 +134,7 @@ fun CurseBreakScreen(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Background
+
         Image(
             painter = painterResource(bgDrawable),
             contentDescription = null,
@@ -163,7 +157,6 @@ fun CurseBreakScreen(
 
         SparksParticleSystem(accentColor = accentColor)
 
-        // Full-screen flash
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -179,7 +172,6 @@ fun CurseBreakScreen(
         ) {
             Spacer(Modifier.weight(1f))
 
-            // Symbol card with shake + scale entrance
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.graphicsLayer {
@@ -189,7 +181,7 @@ fun CurseBreakScreen(
                     alpha = cardAlpha.value
                 }
             ) {
-                // Outer radial glow
+
                 Box(
                     modifier = Modifier
                         .size(180.dp)
@@ -203,7 +195,7 @@ fun CurseBreakScreen(
                             )
                         )
                 )
-                // Symbol container
+
                 Box(
                     modifier = Modifier
                         .size(110.dp)
@@ -233,7 +225,6 @@ fun CurseBreakScreen(
 
             Spacer(Modifier.height(36.dp))
 
-            // "CURSE BROKEN" banner
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.graphicsLayer {
@@ -261,7 +252,7 @@ fun CurseBreakScreen(
                     style = textShadow
                 )
                 Spacer(Modifier.height(16.dp))
-                // Accent divider
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.6f)
@@ -280,7 +271,6 @@ fun CurseBreakScreen(
 
             Spacer(Modifier.height(28.dp))
 
-            // Joker quote
             if (showQuote) {
                 Box(
                     modifier = Modifier
@@ -304,7 +294,6 @@ fun CurseBreakScreen(
 
             Spacer(Modifier.weight(1f))
 
-            // Return button
             Box(modifier = Modifier.graphicsLayer { alpha = buttonAlpha }) {
                 PuzzleConfirmButton(
                     text = "RETURN TO THE LAIR",

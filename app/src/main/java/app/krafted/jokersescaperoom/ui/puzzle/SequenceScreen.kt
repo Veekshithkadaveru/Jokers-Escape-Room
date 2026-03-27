@@ -377,7 +377,7 @@ private fun SymbolCell(
             isWrong -> Color(0xFFF44336)
             else -> Color(0xFF3A3A3A)
         },
-        animationSpec = tween(150),
+        animationSpec = tween(200),
         label = "border_top_$index"
     )
 
@@ -394,8 +394,14 @@ private fun SymbolCell(
 
     val scaleValue by animateFloatAsState(
         targetValue = if (isShowingActive || isCorrect) 1.1f else 1f,
-        animationSpec = spring(dampingRatio = 0.45f, stiffness = 400f),
+        animationSpec = spring(dampingRatio = 0.45f, stiffness = 500f),
         label = "scale_$index"
+    )
+
+    val shakeOffsetX by animateFloatAsState(
+        targetValue = if (isWrong) 10f else 0f,
+        animationSpec = spring(dampingRatio = 0.2f, stiffness = 400f),
+        label = "shake_$index"
     )
 
     val imageAlpha by animateFloatAsState(
@@ -421,6 +427,7 @@ private fun SymbolCell(
         modifier = Modifier.graphicsLayer {
             alpha = cellAlpha
             translationY = cellOffsetY
+            translationX = shakeOffsetX
         }
     ) {
         if (isShowingActive) {

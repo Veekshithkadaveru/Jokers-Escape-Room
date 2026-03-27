@@ -85,7 +85,13 @@ fun ColourSequenceScreen(
     val symbolIndex = card?.symbol?.toSymbolIndex() ?: 0
     val bgDrawable = remember(card?.background) { card?.background.toBackgroundDrawable() }
     val colours = remember(card?.colours) {
-        card?.colours?.map { it.toComposeColor() } ?: emptyList()
+        card?.colours?.mapNotNull {
+            try {
+                it.toComposeColor()
+            } catch (_: Exception) {
+                null
+            }
+        } ?: emptyList()
     }
 
     LaunchedEffect(cardId) { viewModel.loadPuzzle(cardId) }
@@ -145,7 +151,6 @@ fun ColourSequenceScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            // Sequence level indicator
             SequenceLevelBadge(
                 currentLength = uiState.colourSequence.size,
                 accentColor = accentColor
@@ -155,7 +160,6 @@ fun ColourSequenceScreen(
             SectionDivider(accentColor = accentColor)
             Spacer(Modifier.height(12.dp))
 
-            // Phase label
             val phasePulse = rememberInfiniteTransition(label = "phase_pulse")
             val phaseAlpha by phasePulse.animateFloat(
                 initialValue = 0.6f,
@@ -177,7 +181,6 @@ fun ColourSequenceScreen(
 
             Spacer(Modifier.weight(1f))
 
-            // Colour pads — 4 + 3 layout
             if (colours.isNotEmpty()) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -187,7 +190,10 @@ fun ColourSequenceScreen(
                     val row2 = (4 until colours.size)
 
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            12.dp,
+                            Alignment.CenterHorizontally
+                        ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         row1.forEach { idx ->
@@ -209,8 +215,13 @@ fun ColourSequenceScreen(
 
                     if (row2.any()) {
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                            horizontalArrangement = Arrangement.spacedBy(
+                                12.dp,
+                                Alignment.CenterHorizontally
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
                         ) {
                             row2.forEach { idx ->
                                 val padColor = colours[idx]
@@ -234,7 +245,6 @@ fun ColourSequenceScreen(
 
             Spacer(Modifier.weight(1f))
 
-            // Input progress bar (only during INPUT phase)
             if (!isShowing && progressTotal > 0) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -376,12 +386,11 @@ private fun ColourPad(
         modifier = modifier.aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
-        // Outer glow when active
+
         if (isActive) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize(1.35f)
-                    .clip(RoundedCornerShape(18.dp))
+                    .fillMaxSize()
                     .background(
                         Brush.radialGradient(
                             listOf(

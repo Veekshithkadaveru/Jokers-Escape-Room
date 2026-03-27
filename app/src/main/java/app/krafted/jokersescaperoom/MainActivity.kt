@@ -101,7 +101,9 @@ fun JokerNavHost() {
             val context = LocalContext.current
             val card = remember(cardId) { CurseRepository(context).getCard(cardId) }
             val puzzleType = card?.puzzleType ?: ""
-            val accentColor = card?.accentColor?.toComposeColor() ?: Color(0xFFB71C1C)
+            val accentColor = try {
+                card?.accentColor?.toComposeColor() ?: Color(0xFFB71C1C)
+            } catch (_: Exception) { Color(0xFFB71C1C) }
             when (puzzleType) {
                 "SYMBOL_SEQUENCE" -> SequenceScreen(cardId, accentColor, navController)
                 "CODE_CRACKER" -> CodeCrackerScreen(cardId, accentColor, navController)
@@ -120,7 +122,9 @@ fun JokerNavHost() {
             val cardId = backStackEntry.arguments?.getString("cardId") ?: ""
             val context = LocalContext.current
             val card = remember(cardId) { CurseRepository(context).getCard(cardId) }
-            val accentColor = card?.accentColor?.toComposeColor() ?: Color(0xFFB71C1C)
+            val accentColor = try {
+                card?.accentColor?.toComposeColor() ?: Color(0xFFB71C1C)
+            } catch (_: Exception) { Color(0xFFB71C1C) }
             CurseBreakScreen(
                 cardId = cardId,
                 accentColor = accentColor,

@@ -31,7 +31,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
     private var startTimeMs: Long = 0L
     private var showingJob: Job? = null
 
-    // ─── Load ────────────────────────────────────────────────────────────────
 
     fun loadPuzzle(cardId: String, preserveAttempts: Int = 3) {
         val card = repository.getCard(cardId) ?: return
@@ -39,18 +38,22 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         _cardInfo.value = card
         startTimeMs = System.currentTimeMillis()
 
-        val puzzleType = PuzzleType.valueOf(card.puzzleType)
+        val puzzleType = try {
+            PuzzleType.valueOf(card.puzzleType)
+        } catch (_: IllegalArgumentException) {
+            return
+        }
         _uiState.value = buildInitialState(card, puzzleType)
             .copy(attemptsRemaining = preserveAttempts)
 
         when (puzzleType) {
             PuzzleType.SYMBOL_SEQUENCE -> startSequenceShow()
             PuzzleType.COLOUR_SEQUENCE -> startColourSequenceShow()
-            else -> { /* INPUT phase from start */ }
+            else -> { /* INPUT phase from start */
+            }
         }
     }
 
-    // ─── Retry / Reset ───────────────────────────────────────────────────────
 
     fun retryPuzzle() {
         val current = _uiState.value
@@ -62,10 +65,8 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             dao.resetCard(cardId)
         }
-        // Navigation (popBackStack) handled by the screen
-    }
 
-    // ─── Initial State ───────────────────────────────────────────────────────
+    }
 
     private fun buildInitialState(card: CursedCard, puzzleType: PuzzleType): PuzzleUiState {
         return when (puzzleType) {
@@ -160,8 +161,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    // ─── Card 1 — Symbol Sequence ────────────────────────────────────────────
-
     private fun startSequenceShow() {
         val card = currentCard ?: return
         val displayTimeMs = card.difficulty?.firstOrNull()?.displayTimeMs?.toLong() ?: 800L
@@ -203,8 +202,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    // ─── Card 2 — Code Cracker ───────────────────────────────────────────────
-
     fun incrementDial(index: Int) {
         val dials = _uiState.value.dialValues.toMutableList()
         dials[index] = (dials[index] + 1) % 10
@@ -230,8 +227,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    // ─── Card 3 — Pattern Mirror ─────────────────────────────────────────────
-
     fun togglePlayerTile(index: Int) {
         val grid = _uiState.value.playerGrid.toMutableList()
         grid[index] = !grid[index]
@@ -247,8 +242,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
             onAttemptFailed()
         }
     }
-
-    // ─── Card 4 — Tap the Answer ─────────────────────────────────────────────
 
     fun tapAnswerSymbol(symbolIndex: Int) {
         val state = _uiState.value
@@ -273,8 +266,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         _uiState.value = _uiState.value.copy(playerTaps = emptyList())
     }
 
-    // ─── Card 5 — Odd One Out ────────────────────────────────────────────────
-
     fun tapOddSymbol(tappedIndex: Int) {
         val state = _uiState.value
         if (state.phase != PuzzlePhase.INPUT) return
@@ -293,8 +284,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
             onAttemptFailed()
         }
     }
-
-    // ─── Card 6 — Colour Sequence ────────────────────────────────────────────
 
     private fun startColourSequenceShow() {
         val card = currentCard ?: return
@@ -325,12 +314,10 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         val expected = state.colourSequence.getOrNull(state.playerColourInput.size) ?: return
 
         if (colourIndex != expected) {
-            // Wrong tap: reset sequence within the same attempt
-            _uiState.value = state.copy(
-                phase = PuzzlePhase.SHOWING,
-                playerColourInput = emptyList()
-            )
-            startColourSequenceShow()
+
+            showingJob?.cancel()
+            showingJob = null
+            _uiState.value = state.copy(playerColourInput = emptyList())
             onAttemptFailed()
             return
         }
@@ -361,8 +348,6 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    // ─── Card 7 — Speed Round ────────────────────────────────────────────────
-
     fun onTimerExpired() {
         onAttemptFailed()
     }
@@ -375,16 +360,20 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         _uiState.value = _uiState.value.copy(timeRemaining = value)
     }
 
-    // ─── 3-Strike System ────────────────────────────────────────────────────
-
     private fun onAttemptFailed() {
         val state = _uiState.value
         viewModelScope.launch {
-            dao.incrementAttempts(state.cardId)
+            try {
+                dao.incrementAttempts(state.cardId)
+            } catch (_: Exception) {
+            }
             val newAttempts = state.attemptsRemaining - 1
 
             if (newAttempts <= 0) {
-                dao.incrementResets(state.cardId)
+                try {
+                    dao.incrementResets(state.cardId)
+                } catch (_: Exception) {
+                }
                 _uiState.value = state.copy(
                     attemptsRemaining = 0,
                     phase = PuzzlePhase.FAIL,
@@ -406,15 +395,16 @@ class PuzzleViewModel(application: Application) : AndroidViewModel(application) 
         val state = _uiState.value
         val elapsedMs = System.currentTimeMillis() - startTimeMs
         viewModelScope.launch {
-            dao.markBroken(
-                cardId = state.cardId,
-                timeMs = elapsedMs,
-                brokenAt = System.currentTimeMillis()
-            )
+            try {
+                dao.markBroken(
+                    cardId = state.cardId,
+                    timeMs = elapsedMs,
+                    brokenAt = System.currentTimeMillis()
+                )
+            } catch (_: Exception) {
+            }
         }
     }
-
-    // ─── Helpers ─────────────────────────────────────────────────────────────
 
     private fun generatePattern(totalTiles: Int, litTiles: Int): List<Boolean> {
         val litIndices = (0 until totalTiles).shuffled().take(litTiles).toSet()
